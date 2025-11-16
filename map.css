@@ -1,33 +1,26 @@
-html,
-body {
-  margin: 0;
-  padding: 5;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-}
-
 #map {
   width: 80%;
   max-width: 1200px;
-  height: 600px;           /* <-- this brings the map back */
+  height: 600px;
   margin-top: 1.5rem;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  position: relative;      /* needed for the SVG overlay positioning */
+  position: relative; /* needed for the SVG overlay positioning */
 }
 
+/* SVG overlay that holds the D3 circles */
 #map svg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;   /* so map dragging still works */
+  pointer-events: none; /* so map dragging still works */
+  z-index: 1;           /* <-- make sure circles sit above the map */
 }
+
+/* Shared color variables + mixing logic for circles and legend blocks */
 #map svg circle,
 .legend > div {
   --departure-ratio: 0;
@@ -45,6 +38,8 @@ body {
   pointer-events: auto;
   fill: var(--color);
 }
+
+/* Legend container */
 .legend {
   display: flex;
   gap: 1px;              /* tiny gap between blocks */
@@ -55,7 +50,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* Each legend item */
+/* Each legend block */
 .legend > div {
   flex: 1;
   padding: 0.4rem 0.8rem;
@@ -64,10 +59,11 @@ body {
   text-align: center;
 }
 
-/* Optional: tweak alignment per label if you want */
+/* Optional alignment tweaks */
 .legend > div:first-child {
   text-align: left;
 }
+
 .legend > div:last-child {
   text-align: right;
 }

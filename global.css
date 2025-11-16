@@ -8,6 +8,8 @@ body {
   margin: auto;
   padding: 1em;
 }
+
+/* Header with title on left, slider block on right */
 header {
   display: flex;
   gap: 1em;
