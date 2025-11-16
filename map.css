@@ -1,26 +1,23 @@
 html,
 body {
   margin: 0;
-  padding: 0;
+  padding: 5;
+  height: 100%;
   width: 100%;
-}
-
-/* Optional: center content but allow vertical stacking + scrolling */
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
 }
 
 #map {
-  width: 100%; /* Adjust width to your desired size */
-  height: 100%; /* Adjust height to your desired size */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for effect */
-  border-radius: 8px; /* Optional: rounded corners */
-}
-#map {
-  position: relative; /* required so absolute children position correctly */
+  width: 80%;
+  max-width: 1200px;
+  height: 600px;           /* <-- this brings the map back */
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  position: relative;      /* needed for the SVG overlay positioning */
 }
 
 #map svg {
@@ -29,8 +26,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;         /* puts SVG ABOVE the Mapbox tiles */
-  pointer-events: none; /* ensures map dragging still works */
+  pointer-events: none;   /* so map dragging still works */
 }
 #map svg circle,
 .legend > div {
