@@ -14,7 +14,25 @@
     />
 </head>
 <body>
+    <header>
     <h1>🚴🏼‍♀️ Bikewatching</h1>
+
+    <label id="time-filter">
+      Filter by time:
+      <input
+        type="range"
+        id="time-slider"
+        min="-1"
+        max="1440"
+        value="-1"
+      />
+
+      <!-- These two will be styled on their own line -->
+      <time id="time-display">11:59 PM</time>
+      <em id="any-time">(any time)</em>
+    </label>
+    </header>
+
     <p>An immersive, interactive map visualization of bike traffic in the Boston area during different times of the day</p>
     <div id="map">
     <svg></svg>

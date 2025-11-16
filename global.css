@@ -8,3 +8,33 @@ body {
   margin: auto;
   padding: 1em;
 }
+header {
+  display: flex;
+  gap: 1em;
+  align-items: baseline;
+  margin: 0 2rem 0.5rem 2rem;
+}
+
+#time-filter {
+  margin-left: auto;          /* push slider to the right */
+  display: flex;
+  flex-direction: column;     /* put slider + texts in a column */
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+#time-slider {
+  width: 300px;
+}
+
+/* Put time + (any time) on their own line */
+#time-display,
+#any-time {
+  display: block;
+}
+
+/* Make (any time) visually lighter */
+#any-time {
+  color: #777;
+  font-style: italic;
+}
