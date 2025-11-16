@@ -125,7 +125,7 @@ map.on('load', async () => {
         trip.started_at = new Date(trip.started_at);
         trip.ended_at = new Date(trip.ended_at);
         return trip;
-      },
+      }
     );
 
     // Compute initial station traffic (no filter)
@@ -139,23 +139,32 @@ map.on('load', async () => {
       .domain([0, d3.max(stations, (d) => d.totalTraffic)])
       .range([0, 25]);
 
+    // Quantize scale for flow
+    const stationFlow = d3
+      .scaleQuantize()
+      .domain([0, 1])
+      .range([0, 0.5, 1]);
+
     // ---- circles (keyed by short_name) ----
     const circles = svg
       .selectAll('circle')
-      .data(stations, (d) => d.short_name) // key function
+      .data(stations, (d) => d.short_name)
       .enter()
       .append('circle')
       .attr('r', (d) => radiusScale(d.totalTraffic))
-      .attr('fill', 'steelblue')
+      .attr('fill', 'steelblue') // overridden by CSS var
       .attr('stroke', 'white')
       .attr('stroke-width', 1)
       .attr('opacity', 0.8)
+      .style('--departure-ratio', (d) => {
+        const ratio = d.totalTraffic ? d.departures / d.totalTraffic : 0;
+        return stationFlow(ratio);
+      })
       .each(function (d) {
-        // Tooltip <title>
         d3.select(this)
           .append('title')
           .text(
-            `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`,
+            `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
           );
       });
 
@@ -178,7 +187,7 @@ map.on('load', async () => {
     const selectedTime = document.getElementById('time-display');
     const anyTimeLabel = document.getElementById('any-time');
 
-    // Update scatterplot (circle sizes) based on selected time
+    // Update scatterplot (circle sizes & colors) based on selected time
     function updateScatterPlot(timeFilterValue) {
       // Get only the trips that match the selected time filter
       const filteredTrips = filterTripsByTime(trips, timeFilterValue);
@@ -187,16 +196,22 @@ map.on('load', async () => {
       const filteredStations = computeStationTraffic(stations, filteredTrips);
 
       // Adjust radius scale range depending on filtering
-      timeFilterValue === -1
-        ? radiusScale.range([0, 25])
-        : radiusScale.range([3, 50]);
+      if (timeFilterValue === -1) {
+        radiusScale.range([0, 25]);
+      } else {
+        radiusScale.range([3, 50]);
+      }
 
-      // Update radii, keeping circles keyed by station
+      // Update radii and flow color, keeping circles keyed by station
       circles
         .data(filteredStations, (d) => d.short_name)
         .join('circle')
-        .attr('r', (d) => radiusScale(d.totalTraffic));
-    }
+        .attr('r', (d) => radiusScale(d.totalTraffic))
+        .style('--departure-ratio', (d) => {
+          const ratio = d.totalTraffic ? d.departures / d.totalTraffic : 0;
+          return stationFlow(ratio);
+        });
+    } // 🔹 this closing brace was missing in your version
 
     function updateTimeDisplay() {
       // global timeFilter we declared earlier
