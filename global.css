@@ -18,9 +18,9 @@ header {
 }
 
 #time-filter {
-  margin-left: auto;          /* push slider to the right */
+  margin-left: auto;
   display: flex;
-  flex-direction: column;     /* put slider + texts in a column */
+  flex-direction: column;
   align-items: flex-end;
   gap: 0.25rem;
 }
